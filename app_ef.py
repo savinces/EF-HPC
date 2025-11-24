@@ -14,7 +14,7 @@ GOOGLE_API_KEY = "AIzaSyAghyegpsWKXD_bu4o6N-BKzGgl_A0U6po"
 MONGODB_URI = "mongodb+srv://savincesl_db_user:sebas1,Leon@csavl.xvmr26i.mongodb.net/"
 COHERE_API_KEY = "ygQJd23Cpd5n4NvVIorSjAkdcqnNv9lAWOSZUHVu"
 
-USER = "sa.vincesl@alum.up.edu.pe"
+USER = "Sebastian Alonso Vinces Leon"
 
 if not GOOGLE_API_KEY or not MONGODB_URI:
     st.error("❌ Faltan las variables de entorno GOOGLE_API_KEY o MONGODB_URI")
