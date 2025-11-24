@@ -155,7 +155,7 @@ Responde de forma concisa y clara en español.
 # =======================
 
 st.set_page_config(page_title="Chat PDF con MongoDB + API Gemini + API Cohere: ", page_icon="💬")
-st.title("💬 Chat PDF con MongoDB + Gemini + Cohere: "+USER)
+st.title("💬 Chat PDF con MongoDB + API Gemini + API Cohere: "+USER)
 
 archivo_pdf = st.file_uploader("📤 Sube un PDF", type=["pdf"])
 
@@ -191,5 +191,6 @@ for msg in st.session_state.historial:
         st.chat_message("user").write(msg["texto"])
     else:
         st.chat_message("assistant").write(msg["texto"])
+
 
 
