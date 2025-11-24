@@ -1,0 +1,63 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy container app to Azure Web App - wpfinal
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read #This is required for actions/checkout
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ctinal.azurecr.io/
+          username: ${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_8EA618C567274E84A29189DD819775C1 }}
+          password: ${{ secrets.AZUREAPPSERVICE_CONTAINERPASSWORD_44729378E6804E9B9E668FB26965FA96 }}
+
+      - name: Build and push container image to registry
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ctinal.azurecr.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_8EA618C567274E84A29189DD819775C1 }}/final-imagen:${{ github.sha }}
+          file: ./Dockerfile
+
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
+
+    needs: build
+    
+    steps:
+      
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_66A96123A2AA43198B073DCC6749FF6F }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_8ECF29FED40142EC9AC9262B78B0E4B6 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_75DD69E877484AB38AB254747210DAC5 }}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'wpfinal'
+          slot-name: 'Production'
+          images: 'ctinal.azurecr.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_8EA618C567274E84A29189DD819775C1 }}/final-imagen:${{ github.sha }}'
+          
