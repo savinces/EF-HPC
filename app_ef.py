@@ -178,7 +178,7 @@ if pregunta:
         similares = buscar_similares(emb, k=5)
 
         if not similares:
-            respuesta = "No encontré información relevante en el documento."
+            respuesta = "No encontré informacion relevante en el documento."
         else:
             respuesta = generar_respuesta(pregunta, similares)
 
@@ -191,3 +191,4 @@ for msg in st.session_state.historial:
         st.chat_message("user").write(msg["texto"])
     else:
         st.chat_message("assistant").write(msg["texto"])
+
